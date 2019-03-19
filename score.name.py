@@ -9,7 +9,8 @@
 #
 # this version computes recall/precision/F for chunks
 # and alows for multiple chunk types
-#
+
+
 def score (keyFileName, responseFileName):
     keyFile = open(keyFileName, 'r')
     key = keyFile.readlines()
@@ -53,14 +54,15 @@ def score (keyFileName, responseFileName):
             correct = correct + 1
         else:
             incorrect = incorrect + 1
-                # the previous token ends a group if
-                #   we are in a group AND
-                #   the current tag is O OR the current tag is a B tag
-                #   the current tag is an I tag with a different type from the current group
+        # the previous token ends a group if
+        #   we are in a group AND
+        #   the current tag is O OR the current tag is a B tag
+        #   the current tag is an I tag with a different type from the current group
         responseEnd =  responseStart!=0 and (responseTag=='O' or responseTag[0:1]=='B' or (responseTag[0:1]=='I' and responseTag[2:]!=responseGroupType))
         #   the previous token was not in a group or ended a group AND
-                #   the current tag is an I or B tag         # the current token begins a group if
-		#
+        #   the current tag is an I or B tag
+        #   the current token begins a group if
+
         responseBegin = (responseStart==0 or responseEnd) and (responseTag[0:1]=='B' or responseTag[0:1]=='I')
         keyEnd =  keyStart!=0 and (keyTag=='O' or keyTag[0:1]=='B' or (keyTag[0:1]=='I' and keyTag[2:]!=keyGroupType))
         keyBegin = (keyStart==0 or keyEnd) and (keyTag[0:1]=='B' or keyTag[0:1]=='I')
