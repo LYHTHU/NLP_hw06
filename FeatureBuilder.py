@@ -4,10 +4,10 @@ import os
 class FeatureBuilder:
     def __init__(self, input_path = "./CONLL_train.pos-chunk-name"):
         out_path = input_path
-        out_path = out_path[out_path.rfind("/")+1 : out_path.rfind(".")] + ".name"
+        self.out_path = out_path[out_path.rfind("/")+1 : out_path.rfind(".")] + ".name"
         print("Output:", out_path)
         self.in_file = open(input_path, 'r')
-        self.out_file = open(out_path, 'w')
+        self.out_file = open(self.out_path, 'w')
 
     @staticmethod
     def exec_line(line):
@@ -49,9 +49,13 @@ class FeatureBuilder:
 
 if __name__ == '__main__':
     builder = FeatureBuilder()
-    builder.run()
+    # builder.run()
 
-    os.system("rm *.class")
-    os.system("javac -cp ./maxent-3.0.0.jar:trove.jar ./*.java")
-    os.system("java -cp .:./maxent-3.0.0.jar:trove.jar MEtrain ")
-    os.system("java -cp .:./maxent-3.0.0.jar:trove.jar MEtag ")
+    if not (os.path.exists("MEtrain.class") and os.path.exists("MEtag.class")):
+        os.system("javac -cp ./maxent-3.0.0.jar:trove.jar ./*.java")
+
+    model_name = "MEmodel.bin.gz"
+    dev_name = "CONELL_dev.pos-chunk"
+    dev_out = "response.name"
+    os.system("java -cp .:./maxent-3.0.0.jar:trove.jar MEtrain " + builder.out_path + " " + model_name)
+    os.system("java -cp .:./maxent-3.0.0.jar:trove.jar MEtag " + dev_name + " " + model_name + " " + dev_out)
