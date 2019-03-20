@@ -11,7 +11,7 @@
 # and alows for multiple chunk types
 
 
-def score (keyFileName, responseFileName):
+def score(keyFileName, responseFileName):
     keyFile = open(keyFileName, 'r')
     key = keyFile.readlines()
     responseFile = open(responseFileName, 'r')
@@ -82,16 +82,18 @@ def score (keyFileName, responseFileName):
             keyGroupType = keyTag[2:]
         elif keyEnd:
             keyStart = 0
-    print( correct, "out of", str(correct + incorrect) + " tags correct")
+    print(correct, "out of", str(correct + incorrect) + " tags correct")
     accuracy = 100.0 * correct / (correct + incorrect)
-    print( "  accuracy: %5.2f" % accuracy)
-    print( keyGroupCount, "groups in key")
-    print( responseGroupCount, "groups in response")
-    print( correctGroupCount, "correct groups")
+    print("  accuracy: %5.2f" % accuracy)
+    print(keyGroupCount, "groups in key")
+    print(responseGroupCount, "groups in response")
+    print(correctGroupCount, "correct groups")
     precision = 100.0 * correctGroupCount / responseGroupCount
     recall = 100.0 * correctGroupCount / keyGroupCount
     F = 2 * precision  * recall / (precision + recall)
-    print( "  precision: %5.2f" % precision)
-    print( "  recall:    %5.2f" % recall)
-    print( "  F1:        %5.2f" % F)
-    score ('CONLL_dev.name','response.name')
+    print("  precision: %5.2f" % precision)
+    print("  recall:    %5.2f" % recall)
+    print("  F1:        %5.2f" % F)
+
+
+score('CONLL_dev.name', 'response.name')
