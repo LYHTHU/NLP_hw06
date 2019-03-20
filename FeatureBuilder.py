@@ -29,6 +29,7 @@ class FeatureBuilder:
 
     def exec_sentence(self, sentence):
         length = len(sentence)
+
         for i, data in enumerate(sentence):
             if self.train_mode:
                 token, pos, bio, tag = data[0], data[1], data[2], data[3]
@@ -42,13 +43,19 @@ class FeatureBuilder:
             if i < length - 1:
                 post = sentence[i + 1]
             else:
-                post = pre = (None, "end", 0, 0)
+                post = (None, "end", 0, 0)
+
             feature = (pos, pre[1], post[1])
+
+            if token == "-DOCSTART-":
+                feature = ("0", "0", "0")
 
             if self.train_mode:
                 self.append_feature(token, feature, tag)
             else:
                 self.append_feature(token, feature, None)
+
+        self.out_file.write("\n")
 
     def run(self):
         sentence = []
@@ -58,10 +65,6 @@ class FeatureBuilder:
             if not line:
                 break
             data = self.exec_line(line)
-            if data[0] == "-DOCSTART-":
-                self.in_file.readline()
-                continue
-
             sentence.append(data)
             if len(data) == 1:
                 count += 1
