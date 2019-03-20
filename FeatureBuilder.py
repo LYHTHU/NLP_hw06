@@ -46,9 +46,10 @@ class FeatureBuilder:
                 post = (None, "end", 0, 0)
 
             feature = (pos, pre[1], post[1])
+            feature_size = len(feature)
 
             if token == "-DOCSTART-":
-                feature = ("0", "0", "0")
+                feature = ("0"*feature_size)
 
             if self.train_mode:
                 self.append_feature(token, feature, tag)
