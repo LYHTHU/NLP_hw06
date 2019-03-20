@@ -2,10 +2,8 @@ import os
 
 
 class FeatureBuilder:
-    def __init__(self, input_path = "./CONLL_train.pos-chunk-name"):
-        out_path = input_path
-        self.out_path = out_path[out_path.rfind("/")+1 : out_path.rfind(".")] + ".name"
-        print("Output:", out_path)
+    def __init__(self, input_path = "./CONLL_train.pos-chunk-name", train_mode = True):
+        self.out_path = input_path[input_path.rfind("/")+1: input_path.rfind(".")] + ".name"
         self.in_file = open(input_path, 'r')
         self.out_file = open(self.out_path, 'w')
 
@@ -16,8 +14,19 @@ class FeatureBuilder:
         line = line.strip().split(" ")
         return tuple(i for i in line)
 
-    def append_feature(self, feature):
-        pass
+    def append_feature(self, token, feature):
+        str = token
+        for f in feature:
+            str = str + "\t" + "feature=" + f
+        str = str + "\n"
+        self.out_file.write(str)
+
+    def append_feature(self, token, feature, tag):
+        str = token
+        for f in feature:
+            str = str + "\t" + "feature=" + f
+        str = str + "\t" + tag + "\n"
+        self.out_file.write(str)
 
     def close_file(self):
         self.in_file.close()
@@ -42,13 +51,14 @@ class FeatureBuilder:
                 sentence = []
 
         print("Finished.")
+        print("Output:", self.out_path)
         self.close_file()
 
         print("There is ", count, "sentences in training file.")
 
 
 if __name__ == '__main__':
-    builder = FeatureBuilder()
+    builder = FeatureBuilder(train_mode=True)
     # builder.run()
 
     if not (os.path.exists("MEtrain.class") and os.path.exists("MEtag.class")):
