@@ -1,5 +1,6 @@
 import os
 
+
 class FeatureBuilder:
     def __init__(self, input_path = "./CONLL_train.pos-chunk-name"):
         out_path = input_path
@@ -52,3 +53,5 @@ if __name__ == '__main__':
 
     os.system("rm *.class")
     os.system("javac -cp ./maxent-3.0.0.jar:trove.jar ./*.java")
+    os.system("java -cp .:./maxent-3.0.0.jar:trove.jar MEtrain ")
+    os.system("java -cp .:./maxent-3.0.0.jar:trove.jar MEtag ")
