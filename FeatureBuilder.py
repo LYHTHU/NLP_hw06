@@ -15,13 +15,13 @@ class FeatureBuilder:
         return tuple(i for i in line)
 
     def append_feature(self, token, feature, tag):
-        str = token
+        ret = token
         for f in feature:
-            str = str + "\t" + "feature=" + f
+            ret = ret + "\t" + "feature=" + str(f)
         if self.train_mode:
-            str = str + "\t" + tag
-        str = str + "\n"
-        self.out_file.write(str)
+            ret = ret + "\t" + str(tag)
+        ret = ret + "\n"
+        self.out_file.write(ret)
 
     def close_file(self):
         self.in_file.close()
@@ -45,11 +45,13 @@ class FeatureBuilder:
             else:
                 post = (None, "end", 0, 0)
 
-            feature = (pos, pre[1], post[1])
+            all_feature = (pos, bio, pre[1], post[1], token.islower())
+            enable_list = [1 for i in range(len(all_feature))]
+            feature = tuple(f for i, f in enumerate(all_feature) if enable_list[i])
             feature_size = len(feature)
 
             if token == "-DOCSTART-":
-                feature = ("0"*feature_size)
+                feature = ("-X-"*feature_size)
 
             if self.train_mode:
                 self.append_feature(token, feature, tag)
