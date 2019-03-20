@@ -46,7 +46,9 @@ class FeatureBuilder:
                 post = (None, "end", 0, 0)
 
             all_feature = (pos, bio, pre[1], post[1], token.islower())
-            enable_list = [1 for i in range(len(all_feature))]
+            # enable_list = [1 for i in range(len(all_feature))]
+            # enable_list = [1, 0, 0, 0, 1]
+            enable_list = [1, 0, 0, 0, 1]
             feature = tuple(f for i, f in enumerate(all_feature) if enable_list[i])
             feature_size = len(feature)
 
