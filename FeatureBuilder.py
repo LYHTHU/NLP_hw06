@@ -45,15 +45,19 @@ class FeatureBuilder:
             else:
                 post = (None, "end", 0, 0)
 
-            all_feature = (pos, bio, pre[1], post[1], token.islower())
-            # enable_list = [1 for i in range(len(all_feature))]
-            # enable_list = [1, 0, 0, 0, 1]
-            enable_list = [1, 0, 0, 0, 1]
+            all_feature = [pos, bio, pre[1], post[1], token.islower(), "-" in token, token.istitle(), pre[0], post[0]]
+
+            enable_list = [1 for i in range(len(all_feature))]
+            # disable some feature
+            enable_list[2] = 0
+            enable_list[3] = 0
+            enable_list[6] = 0
+            #
             feature = tuple(f for i, f in enumerate(all_feature) if enable_list[i])
             feature_size = len(feature)
 
             if token == "-DOCSTART-":
-                feature = ("-X-"*feature_size)
+                feature = ("-X-" for i in range(feature_size))
 
             if self.train_mode:
                 self.append_feature(token, feature, tag)
