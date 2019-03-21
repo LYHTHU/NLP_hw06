@@ -29,7 +29,7 @@ class FeatureBuilder:
 
     def exec_sentence(self, sentence):
         length = len(sentence)
-
+        enable_list = None
         for i, data in enumerate(sentence):
             if self.train_mode:
                 token, pos, bio, tag = data[0], data[1], data[2], data[3]
@@ -45,14 +45,15 @@ class FeatureBuilder:
             else:
                 post = (None, "end", 0, 0)
 
-            all_feature = [pos, bio, pre[1], post[1], token.islower(), "-" in token, token.istitle(), pre[0], post[0]]
+            all_feature = [pre[1], post[1], pre[2], post[2], token.istitle(), token, pre[0], post[0], pos, bio, token.islower(), "-" in token]
 
-            enable_list = [1 for i in range(len(all_feature))]
-            # disable some feature
-            enable_list[2] = 0
-            enable_list[3] = 0
-            enable_list[6] = 0
-            #
+            if not enable_list:
+                enable_list = [1 for i in range(len(all_feature))]
+                # disable some feature
+                for i in range(5):
+                    enable_list[i] = 0
+                #
+
             feature = tuple(f for i, f in enumerate(all_feature) if enable_list[i])
             feature_size = len(feature)
 
