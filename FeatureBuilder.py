@@ -45,12 +45,13 @@ class FeatureBuilder:
             else:
                 post = (None, "end", 0, 0)
 
-            all_feature = [pre[1], post[1], pre[2], post[2], token.istitle(), token, pre[0], post[0], pos, bio, token.islower(), "-" in token]
+            all_feature = [pre[1], post[1], pre[2], post[2],
+                           len(token), token, pre[0], post[0], pos, bio, token.islower(), "-" in token]
 
             if not enable_list:
                 enable_list = [1 for i in range(len(all_feature))]
                 # disable some feature
-                for i in range(5):
+                for i in range(4):
                     enable_list[i] = 0
                 #
 
