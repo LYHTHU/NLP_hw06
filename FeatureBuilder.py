@@ -45,8 +45,12 @@ class FeatureBuilder:
             else:
                 post = (None, "end", 0, 0)
 
+            last_tag = "@@"
+            if self.train_mode and i > 0:
+                last_tag = sentence[i-1][3]
+
             all_feature = [pre[1], post[1], pre[2], post[2],
-                           len(token), token, pre[0], post[0], pos, bio, token.islower(), "-" in token]
+                           len(token), token, pre[0], post[0], pos, bio, token.islower(), "-" in token, last_tag]
 
             if not enable_list:
                 enable_list = [1 for i in range(len(all_feature))]
