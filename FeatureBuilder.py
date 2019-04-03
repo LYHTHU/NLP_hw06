@@ -52,8 +52,14 @@ class FeatureBuilder:
             if self.train_mode and i > 0:
                 prev_tag = sentence[i-1][3]
 
+            upper_char_count = 0
+            for ch in token:
+                if ch.isupper():
+                    upper_char_count += 1
+
+            token_lower = token.lower()
             all_feature = [pre[1], post[1], pre[2], post[2],
-                           len(token), token, pre[0], post[0], pos, bio, token.islower(), "-" in token, prev_tag, token.lower(), pre[0].lower()]
+                           len(token), token, pre[0], post[0], pos, bio, token.islower(), "-" in token, prev_tag, token_lower, pre[0].lower(), upper_char_count, upper_char_count / len(token)]
 
             if not enable_list:
                 enable_list = [1 for i in range(len(all_feature))]
