@@ -1,11 +1,14 @@
 import os
 
+
 class FeatureBuilder:
     def __init__(self, input_path = "./CONLL_train.pos-chunk-name", train_mode = True):
         self.out_path = input_path[input_path.rfind("/")+1: input_path.rfind(".")] + ".feature"
         self.in_file = open(input_path, 'r')
         self.out_file = open(self.out_path, 'w')
         self.train_mode = train_mode
+
+        self.write_count = 0
 
     @staticmethod
     def exec_line(line):
@@ -39,18 +42,18 @@ class FeatureBuilder:
             if i > 0:
                 pre = sentence[i - 1]
             else:
-                pre = (None, "start", 0, 0)
+                pre = ("None", "start", 0, 0)
             if i < length - 1:
                 post = sentence[i + 1]
             else:
-                post = (None, "end", 0, 0)
+                post = ("None", "end", 0, 0)
 
-            last_tag = "@@"
+            prev_tag = "@@"
             if self.train_mode and i > 0:
-                last_tag = sentence[i-1][3]
+                prev_tag = sentence[i-1][3]
 
             all_feature = [pre[1], post[1], pre[2], post[2],
-                           len(token), token, pre[0], post[0], pos, bio, token.islower(), "-" in token, last_tag]
+                           len(token), token, pre[0], post[0], pos, bio, token.islower(), "-" in token, prev_tag, token.lower(), pre[0].lower()]
 
             if not enable_list:
                 enable_list = [1 for i in range(len(all_feature))]
@@ -75,10 +78,12 @@ class FeatureBuilder:
     def run(self):
         sentence = []
         count = 0
+        count_line = 0
         while True:
             line = self.in_file.readline()
             if not line:
                 break
+            count_line += 1
             data = self.exec_line(line)
             sentence.append(data)
             if len(data) == 1:
@@ -90,7 +95,7 @@ class FeatureBuilder:
         print("Finished.")
         print("Output:", self.out_path)
         self.close_file()
-
+        print("There is ", count_line, "lines in training file.")
         print("There is ", count, "sentences in training file.")
 
 
