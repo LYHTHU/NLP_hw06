@@ -48,6 +48,8 @@ class FeatureBuilder:
             else:
                 post = ("None", "end", 0, 0)
 
+            token_lower = token.lower()
+
             prev_tag = "@@"
             if self.train_mode and i > 0:
                 prev_tag = sentence[i-1][3]
@@ -58,9 +60,16 @@ class FeatureBuilder:
                 if ch.isupper():
                     upper_char_count += 1
 
-            token_lower = token.lower()
+            # count_non_alphanum = len(token)
+            # count_non_alpha = len(token)
+            # for ch in token_lower:
+            #     if ch.isalpha():
+            #         count_non_alpha -= 1
+            #     if ch.isalnum():
+            #         count_non_alphanum -= 1
+
             all_feature = [pre[1], post[1], pre[2], post[2],
-                           len(token), token, pre[0], post[0], pos, bio, token.islower(), "-" in token, prev_tag,
+                           len(token), token, pre[0], post[0], pos, bio, token.islower(), token.find("-"), prev_tag,
                            token_lower, pre[0].lower(), upper_char_count, upper_char_count / len(token),
                            token_lower.find("bach")]
 

@@ -10,7 +10,7 @@
 5.  `pos`: The pos tag of current token.
 6.  `bio`: The bio tag of current token. 
 7.  `token.islower()`: The bool whether all the chars in the token is in lower case.
-8.  `"-" in token`: The bool whether there is a "-" in the token.
+8.  `token.find("-")`: The index of "-" in the token. If not found then this item is `-1`
 9.  `prev_tag`: The name tag of the previous token. If the current token is the first word, then this item is "@@"
 10. `token_lower`: The lowercase string of the token
 11. `pre[0].lower()`: The lowercase string of the precedent token
@@ -21,7 +21,11 @@
 16. `post[1]`: The pos tag of the succeeding token. If no succeeding token, then it is `"end"`.
 17. `pre[2]`: The bio tag of the precedent token. If no precedent, then it is `0`.
 18. `post[2]`: The bio tag of the succeeding token. If no succeeding token, then it is `0`.
+19. `count_non_alpha / len(token)`: The fraction of the number of the chars which is not an alphabet char. 
+19. `count_non_alphanum / len(token)`: The fraction of the number of the chars which is not an alphabet or number char. 
+
 ## Features finally chosen
+To accelerate the program, the code of some features that are not chosen(e.g, count_non_alpha, count_non_alphanum) is commented.
 1.  `len(token)` 
 2.  `token`
 3.  `pre[0]`
@@ -29,7 +33,7 @@
 5.  `pos` 
 6.  `bio`
 7.  `token.islower()` 
-8.  `"-" in token` 
+8.  `token.find("-")` 
 9.  `prev_tag`
 10. `token_lower`
 11. `pre[0].lower()`
@@ -38,9 +42,14 @@
 14. `token_lower.find("bach")`
 
 ## The highest F-1 measure tested on the development corpus
-  precision: 83.94<br>
-  recall:    81.88<br> 
-  F1:        82.90<br>
+49984 out of 51578 tags correct <br>
+  accuracy: 96.91 <br>
+5917 groups in key <br>
+5777 groups in response <br>
+4849 correct groups <br>
+  precision: 83.94 <br>
+  recall:    81.95 <br>
+  F1:        82.93 <br>
   
 ## The design of the program
 I created a class `FeatureBuilder` to read a tagged/untagged file with pos and bio. There is a variable named `train_mode`.
