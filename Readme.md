@@ -40,6 +40,15 @@
   F1:        82.90<br>
   
 ## The design of the program
+I created a class `FeatureBuilder` to read a tagged/untagged file with pos and bio. There is a variable named `train_mode`.
+It can be set by construction function or directly. When `train_mode` is true, it will create a feature file with tag, 
+otherwise it will create the feature file without tag. <br>
+The `run` function is the main part of a builder. <br>
+I use a python list named `all_feature` to store all the features I have tried. And I create a mask vector named `enable_list`
+to activate and deactivate the features. Each item of `enable_list` is a binary integer, and when the item is `1` then 
+the corresponding feature is activated, and if it is `0` then the feature is disabled.<br>
+Given an input file whose path is like `[filepath].[suffix]`, then create a `FeatureBuilder` object `builder` and call 
+`builder.run()`. It will generated a file whose path is `[filepath].feature`.
 
 ## How to run it
 Put the training file and development file and the Jar file in the same folder with the `FeatureBuilder.py.`<br>
