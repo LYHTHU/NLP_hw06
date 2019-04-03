@@ -119,6 +119,11 @@ if __name__ == '__main__':
     dev_name = "CONLL_dev.pos-chunk"
     dev_feature = "CONLL_dev.feature"
     dev_out = "response.name"
+
+    test_name = "CONLL_test.pos-chunk"
+    test_feature = "CONLL_test.feature"
+    test_out = "CONLL_test.name"
+
     os.system("java -cp .:./maxent-3.0.0.jar:trove.jar MEtrain " + builder.out_path + " " + model_name)
 
     builder = FeatureBuilder(input_path=dev_name, train_mode=False)
@@ -126,3 +131,8 @@ if __name__ == '__main__':
 
     os.system("java -cp .:./maxent-3.0.0.jar:trove.jar MEtag " + dev_feature + " " + model_name + " " + dev_out)
     os.system("python3 score.name.py")
+
+    builder_test = FeatureBuilder(input_path=test_name, train_mode=False)
+    builder_test.run()
+    os.system("java -cp .:./maxent-3.0.0.jar:trove.jar MEtag " + test_feature + " " + model_name + " " + test_out)
+

@@ -42,3 +42,13 @@
 ## The design of the program
 
 ## How to run it
+Put the training file and development file and the Jar file in the same folder with the `FeatureBuilder.py.`<br>
+Run `"python3 FeatureBuilder.py"`.<br>
+The python script will automatically build the feature file of training file, and compile and run `MEtrain` to train on it.
+Then it will build the feature file of the development file and test file. Then run the MEtag to tag them, and finally 
+run `score.name.py` to estimate the result.<br>
+<br>
+The class `FeatureBuilder` has 2 arguments, `input_path` and `train_mdoe`. The default file path is `"./CONLL_train.pos-chunk-name"`. And the default value of `train_mode` is `true`. <br>
+<br>
+If you want to use this class to build a feature of a given `.pos-chunk` file, just create a `FeatureBuilder` object `builder` with its path. If it is a train file then the `train_mode` is true, else it is `false`.
+Then call `builder.run()`, then the feature file will be generated.
