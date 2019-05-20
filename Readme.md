@@ -1,6 +1,6 @@
 # NLP Assignment 6
 #### Yunhao Li
-#### NetID: yl6220
+#### NetID:
 
 ## Features tried
 1.  `len(token)`: The length of the token.
